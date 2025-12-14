@@ -67,6 +67,7 @@ class AuthService {
       if (e.code == 'user-not-found') return {'error': 'Utilisateur introuvable'};
       if (e.code == 'wrong-password') return {'error': 'Mot de passe incorrect'};
       if (e.code == 'invalid-email') return {'error': 'Email invalide'};
+      if (e.code == 'invalid-credential') return {'error': 'Email ou mot de passe incorrect'};
       return {'error': e.code};
     } catch (e) {
       return {'error': 'Erreur lors de la connexion: ${e.toString()}'};

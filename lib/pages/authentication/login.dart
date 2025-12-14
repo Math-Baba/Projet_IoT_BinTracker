@@ -14,10 +14,17 @@ class Login extends StatefulWidget {
 }
 
 class _LoginState extends State<Login> {
+  // Contrôleurs pour récupérer les valeurs saisies dans les champs texte
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+
+  // Instance du service d’authentification
   final AuthService _authService = AuthService();
 
+  // Variable d'état pour afficher/masquer le mot de passe
+  bool _obscurePassword = true;
+
+  // Libération des ressources lorsque le widget est détruit
   @override
   void dispose() {
     _emailController.dispose();
@@ -29,8 +36,14 @@ class _LoginState extends State<Login> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.white,
+
+      // Evite que le clavier cache les champs
       resizeToAvoidBottomInset: true,
+
+      // Lien vers la page d'inscription en bas de l'écran
       bottomNavigationBar: _signup(context),
+
+      // AppBar transparente avec bouton de retour
       appBar: AppBar(
         backgroundColor: Colors.transparent,
         elevation: 0,
@@ -50,24 +63,30 @@ class _LoginState extends State<Login> {
           ),
         ),
       ),
+
+      // Contenu principal
       body: SafeArea(
         child: SingleChildScrollView(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           child: Column(
             children: [
+              // Titre de la page
               Center(
                 child: Text(
-                  'Hello Again',
+                  'Un plaisir de vous revoir !',
                   style: GoogleFonts.raleway(
                     fontSize: 32,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
               ),
+              // Champ email
               const SizedBox(height: 80),
               _emailAddress(),
+              // Champ mot de passe
               const SizedBox(height: 20),
               _password(),
+              // Bouton de connexion
               const SizedBox(height: 50),
               _signin(context),
             ],
@@ -77,18 +96,19 @@ class _LoginState extends State<Login> {
     );
   }
 
+  // Champ saisie de l'adresse email
   Widget _emailAddress() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Email Address', style: GoogleFonts.raleway(fontSize: 16)),
+        Text('Adresse mail', style: GoogleFonts.raleway(fontSize: 16)),
         const SizedBox(height: 16),
         TextField(
           controller: _emailController,
           keyboardType: TextInputType.emailAddress,
           decoration: InputDecoration(
             filled: true,
-            hintText: 'example@email.com',
+            hintText: 'exemple@email.com',
             fillColor: const Color(0xffF7F7F9),
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(14),
@@ -100,15 +120,16 @@ class _LoginState extends State<Login> {
     );
   }
 
+  // Champ saisie du mot de passe
   Widget _password() {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text('Password', style: GoogleFonts.raleway(fontSize: 16)),
+        Text('Mot de passe', style: GoogleFonts.raleway(fontSize: 16)),
         const SizedBox(height: 16),
         TextField(
           controller: _passwordController,
-          obscureText: true,
+          obscureText: _obscurePassword, // Affiche/Masque le mot de passe
           decoration: InputDecoration(
             filled: true,
             fillColor: const Color(0xffF7F7F9),
@@ -116,12 +137,25 @@ class _LoginState extends State<Login> {
               borderRadius: BorderRadius.circular(14),
               borderSide: BorderSide.none,
             ),
+            suffixIcon: IconButton(
+              icon: Icon(
+                _obscurePassword
+                    ? Icons.visibility_off
+                    : Icons.visibility,
+              ),
+              onPressed: () {
+                setState(() {
+                  _obscurePassword = !_obscurePassword;
+                });
+              },
+            ),
           ),
         ),
       ],
     );
   }
 
+  // Bouton de connexion
   Widget _signin(BuildContext context) {
     return ElevatedButton(
       style: ElevatedButton.styleFrom(
@@ -131,6 +165,7 @@ class _LoginState extends State<Login> {
           borderRadius: BorderRadius.circular(14),
         ),
       ),
+      // Vérification des champs vides
       onPressed: () async {
         if (_emailController.text.trim().isEmpty || 
             _passwordController.text.trim().isEmpty) {
@@ -140,11 +175,13 @@ class _LoginState extends State<Login> {
           return;
         }
 
+        // Appel du service d'authentification
         final result = await _authService.login(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
 
+        // Gestion des erreurs
         if (result == null) {
           ScaffoldMessenger.of(context).showSnackBar(
             const SnackBar(content: Text('Erreur inconnue lors de la connexion')),
@@ -168,7 +205,7 @@ class _LoginState extends State<Login> {
           return;
         }
 
-        // Rediriger selon le rôle
+        // Rediriger selon le rôle (admin/user)
         if (role == 'admin') {
           Navigator.pushReplacement(
             context,
@@ -181,7 +218,7 @@ class _LoginState extends State<Login> {
           );
         }
       },
-      child: const Text("Sign In"),
+      child: const Text("Se connecter", style: TextStyle(color: Colors.white)),
     );
   }
 
@@ -193,11 +230,11 @@ class _LoginState extends State<Login> {
         text: TextSpan(
           children: [
             const TextSpan(
-              text: "New User? ",
+              text: "Nouveau sur l'application ? ",
               style: TextStyle(color: Color(0xff6A6A6A), fontSize: 16),
             ),
             TextSpan(
-              text: "Create Account",
+              text: "Créer un compte",
               style: const TextStyle(
                 color: Color(0xff1A1D1E),
                 fontSize: 16,

@@ -8,10 +8,12 @@ import 'services/auth_service.dart';
 Future<void> main() async{
   WidgetsFlutterBinding.ensureInitialized();
 
+  // Connexion Firebase
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.currentPlatform
   );
 
+  // Création d'un utilisateur Admin
   //await AuthService().signup(
   //    email: 'admin@admin.com',
   //  password: '12345678',

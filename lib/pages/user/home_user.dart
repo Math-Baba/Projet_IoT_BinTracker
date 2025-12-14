@@ -4,7 +4,7 @@ import 'package:smart_recycle/pages/authentication/login.dart';
 
 class HomeUser extends StatelessWidget {
   HomeUser({super.key});
-  final AuthService _authService = AuthService(); // service
+  final AuthService _authService = AuthService();
 
   @override
   Widget build(BuildContext context) {
@@ -12,10 +12,11 @@ class HomeUser extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Accueil User'),
         actions: [
+          // Bouton de déconnexion
           IconButton(
             icon: const Icon(Icons.logout),
             onPressed: () async {
-              await _authService.logout(); // utilise la méthode du service
+              await _authService.logout(); // utilise la méthode logout du service
               Navigator.pushAndRemoveUntil(
                 context,
                 MaterialPageRoute(builder: (_) => const Login()),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:smart_recycle/services/auth_service.dart';
 import 'package:smart_recycle/pages/authentication/login.dart';
+import 'package:smart_recycle/pages/user/map_bins.dart';
 
 class HomeUser extends StatelessWidget {
   HomeUser({super.key});
@@ -10,7 +11,8 @@ class HomeUser extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Accueil User'),
+        automaticallyImplyLeading: false,
+        title: const Text('Smart Bin Tracker'),
         actions: [
           // Bouton de déconnexion
           IconButton(
@@ -26,7 +28,7 @@ class HomeUser extends StatelessWidget {
           ),
         ],
       ),
-      body: const Center(child: Text('Bienvenue, utilisateur !')),
+        body: const MapBinsPage(),
     );
   }
 }

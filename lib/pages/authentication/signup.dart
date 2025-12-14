@@ -22,6 +22,9 @@ class _SignupState extends State<Signup> {
   // Variable d'état pour afficher/masquer le mot de passe
   bool _obscurePassword = true;
 
+  // Variable d'état pour le chargement
+  bool _isLoading = false;
+
   // Libération des ressources lorsque le widget est détruit
   @override
   void dispose() {
@@ -156,8 +159,20 @@ class _SignupState extends State<Signup> {
               behavior: SnackBarBehavior.floating,
             ),
           );
-          // Redirige vers la page de connexion en cas de succès
         } else {
+          // Affiche un message de succès
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('Inscription réussie !'),
+              backgroundColor: Colors.green,
+              behavior: SnackBarBehavior.floating,
+            ),
+          );
+
+          // Attendre 1 seconde pour que l'utilisateur voie le message
+          await Future.delayed(const Duration(seconds: 1));
+
+          // Redirige vers la page de connexion en cas de succès
           Navigator.pushReplacement(
             context,
             MaterialPageRoute(builder: (_) => Login()),

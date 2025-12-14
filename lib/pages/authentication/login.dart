@@ -24,6 +24,9 @@ class _LoginState extends State<Login> {
   // Variable d'état pour afficher/masquer le mot de passe
   bool _obscurePassword = true;
 
+  // Variable d'état pour le chargement
+  bool _isLoading = false;
+
   // Libération des ressources lorsque le widget est détruit
   @override
   void dispose() {
@@ -175,11 +178,15 @@ class _LoginState extends State<Login> {
           return;
         }
 
+        setState(() => _isLoading = true); // démarre le chargement
+
         // Appel du service d'authentification
         final result = await _authService.login(
           email: _emailController.text.trim(),
           password: _passwordController.text.trim(),
         );
+
+        setState(() => _isLoading = false); // arrêter le chargement
 
         // Gestion des erreurs
         if (result == null) {
@@ -218,7 +225,16 @@ class _LoginState extends State<Login> {
           );
         }
       },
-      child: const Text("Se connecter", style: TextStyle(color: Colors.white)),
+      child: _isLoading
+      ? const SizedBox(
+      width: 24,
+      height: 24,
+      child: CircularProgressIndicator(
+        color: Colors.white,
+        strokeWidth: 2,
+      ),
+    )
+        : const Text("Se connecter", style: TextStyle(color: Colors.white)),
     );
   }
 

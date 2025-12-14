@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:smart_recycle/pages/authentication/login.dart';
 import 'package:smart_recycle/services/auth_service.dart';
-import 'package:smart_recycle/pages/authentication/login.dart';
 
 class Signup extends StatefulWidget {
   const Signup({super.key});

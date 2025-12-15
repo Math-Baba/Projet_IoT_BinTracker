@@ -10,6 +10,7 @@ enum BinCategory {
 class SmartBin {
   final String id;
   final String name;
+  final String region;
   final double latitude;
   final double longitude;
   final List<BinCategory> category;
@@ -17,6 +18,7 @@ class SmartBin {
   SmartBin({
     required this.id,
     required this.name,
+    required this.region,
     required this.latitude,
     required this.longitude,
     required this.category,
